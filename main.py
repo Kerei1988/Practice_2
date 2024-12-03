@@ -3,7 +3,7 @@ from os import close
 import data_download as dd
 import data_plotting as dplt
 from task_1 import calculate_and_display_average_price as cda
-
+from task_2 import notify_if_strong_fluctuations as nsf
 
 def main():
     print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
@@ -16,14 +16,16 @@ def main():
     # Fetch stock data
     stock_data = dd.fetch_stock_data(ticker, period)
 
+    oscillation = nsf(stock_data, 4)
+
     avarage_price = cda(stock_data, time_period=7)
     print(avarage_price.head(10))
 
-    # # Add moving average to the data
-    # stock_data = dd.add_moving_average(stock_data)
-    #
-    # # Plot the data
-    # dplt.create_and_save_plot(stock_data, ticker, period)
+    # Add moving average to the data
+    stock_data = dd.add_moving_average(stock_data)
+
+    # Plot the data
+    dplt.create_and_save_plot(stock_data, ticker, period)
 
 
 if __name__ == "__main__":

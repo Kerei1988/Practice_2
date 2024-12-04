@@ -139,6 +139,51 @@ pip install pandas yfinance matplotlib
             Дата: 2024-06-11, Колебание цены = 7.26, больше указанного порога = 4
             Дата: 2024-08-05, Колебание цены = 4.82, больше указанного порога = 4
 
-        
-        
+
+### Задание 3.   Добавить функцию export_data_to_csv(data, filename), которая позволяет сохранять загруженные данные об акциях в CSV файл.
+
+            def export_data_to_csv(data, filename=None):
+                """
+                Функция принимает DataFrame и имя файла, после чего сохранять данные в указанный файл.
+                :param data: экземпляр pandas DataFrame или список словарей
+                :param filename: Имя файла, по умолчанию создается имя файла в котором указана дата создания
+                :return: создает файл в формате .csv
+                """
+                if filename is None:
+                    filename = f"file_{datetime.now().strftime('%Y-%m-%d')}.csv"
+                if isinstance(data, pd.DataFrame):
+                    data.to_csv(filename, index=False, encoding='utf-8')
+                else:
+                    raise ValueError("data должно быть экземпляром pandas DataFrame или списком словарей")
+            
+                print(f"Данные успешно экспортированы в файл: {filename}")
+
+
+# пример работы функции
+      import data_download as dd
+      from task_3 import export_data_to_csv as edc
+
+      def main():
+          print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
+          print("Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), GOOGL (Alphabet Inc), MSFT (Microsoft Corporation),                   AMZN (Amazon.com Inc), TSLA (Tesla Inc).")
+          print("Общие периоды времени для данных о запасах включают: 1д, 5д, 1мес, 3мес, 6мес, 1г, 2г, 5г, 10л, с начала года, макс.")
       
+          ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc):»")
+          period = input("Введите период для данных (например, '1mo' для одного месяца): ")
+      
+          # Fetch stock data
+          stock_data = dd.fetch_stock_data(ticker, period)
+      
+          edc(stock_data)
+
+# Введенные данные: тикер - AAPL, период- 1 месяц, имя файла создано по умолчанию
+# вывод в консоле:
+      Добро пожаловать в инструмент получения и построения графиков биржевых данных.
+      Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), GOOGL (Alphabet Inc), MSFT (Microsoft Corporation), AMZN             (Amazon.com Inc), TSLA (Tesla Inc).
+      Общие периоды времени для данных о запасах включают: 1д, 5д, 1мес, 3мес, 6мес, 1г, 2г, 5г, 10л, с начала года, макс.
+      Введите тикер акции (например, «AAPL» для Apple Inc):»AAPL
+      Введите период для данных (например, '1mo' для одного месяца): 1mo
+      Данные успешно экспортированы в файл: file_2024-12-04.csv
+      
+              
+            

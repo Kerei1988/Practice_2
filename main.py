@@ -1,9 +1,9 @@
 
 import data_download as dd
-import data_plotting as dplt
-from task_1 import calculate_and_display_average_price as cda
-from task_2 import notify_if_strong_fluctuations as nsf
-from task_3 import export_data_to_csv as edc
+import data_plotting as dp
+from task_1 import calculate_and_display_average_price as cada
+from task_2 import notify_if_strong_fluctuations as nisf
+from task_3 import export_data_to_csv as edtc
 
 def main():
     print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
@@ -17,21 +17,20 @@ def main():
     stock_data = dd.fetch_stock_data(ticker, period)
 
     # Writing the received data to a .csv file
-    edc(stock_data)
+    edtc(stock_data)
 
     # Price fluctuations with the specified threshold
-    oscillation = nsf(stock_data, 4)
+    oscillation = nisf(stock_data, 4)
 
     # The average closing price of shares for a given period.
-    avarage_price = cda(stock_data, time_period=7)
-    print(avarage_price.head(10))
+    average_price = cada(stock_data, time_period=7)
+    print(average_price.head(10))
 
     # Add moving average to the data
     stock_data = dd.add_moving_average(stock_data)
 
     # Plot the data
-    dplt.create_and_save_plot(stock_data, ticker, period)
-
+    dp.create_and_save_plot(stock_data, ticker, period)
 
 if __name__ == "__main__":
     main()

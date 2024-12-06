@@ -1,9 +1,11 @@
 
 import data_download as dd
 import data_plotting as dp
+
 from task_1 import calculate_and_display_average_price as cada
 from task_2 import notify_if_strong_fluctuations as nisf
 from task_3 import export_data_to_csv as edtc
+
 
 def main():
     print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
@@ -16,21 +18,25 @@ def main():
     # Fetch stock data
     stock_data = dd.fetch_stock_data(ticker, period)
 
-    # Writing the received data to a .csv file
-    edtc(stock_data)
+    if 'Close' in stock_data.columns:
+        # Writing the received data to a .csv file
+        edtc(stock_data)
 
-    # Price fluctuations with the specified threshold
-    oscillation = nisf(stock_data, 4)
+        # Price fluctuations with the specified threshold
+        oscillation = nisf(stock_data, 4)
 
-    # The average closing price of shares for a given period.
-    average_price = cada(stock_data, time_period=7)
-    print(average_price.head(10))
+        # The average closing price of shares for a given period.
+        average_price = cada(stock_data, time_period=7)
+        print(average_price)
 
-    # Add moving average to the data
-    stock_data = dd.add_moving_average(stock_data)
+        # Add moving average to the data
+        average = dd.add_moving_average(stock_data)
+        print(average)
 
-    # Plot the data
-    dp.create_and_save_plot(stock_data, ticker, period)
+        # # Plot the data
+        dp.create_and_save_plot(stock_data, ticker, period)
+    else:
+        raise ValueError(f"Отсутствует необходимый столбец: 'Close'")
 
 if __name__ == "__main__":
     main()

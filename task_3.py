@@ -2,12 +2,13 @@
 import pandas as pd
 from datetime import datetime
 
-def export_data_to_csv(data, filename=None):
+
+def export_data_to_csv(data: pd.DataFrame, filename: str = None) -> None:
     """
     Функция принимает DataFrame и имя файла, после чего сохранять данные в указанный файл.
 
     :param data: Экземпляр pandas DataFrame или список словарей
-    :param filename: Str Имя файла, по умолчанию создается имя файла в котором указана
+    :param filename: Имя файла, по умолчанию создается имя файла в котором указана
      дата создания
     :return: None
     """

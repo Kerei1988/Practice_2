@@ -1,10 +1,13 @@
 
-def notify_if_strong_fluctuations(data, threshold):
+import pandas as pd
+
+
+def notify_if_strong_fluctuations(data: pd.DataFrame, threshold: float) -> str | None:
     """
      Функция уведомляет о сильных колебаниях цен акций на основе заданного порога.
 
-     :param data: DataFrame, содержащий данные о ценах акций. Должен содержать колонку 'Close'.
-     :param threshold: Float, пороговое значение для определения сильных колебаний.
+     :param data: DataFrame содержащий данные о ценах акций. Должен содержать колонку 'Close'.
+     :param threshold: Пороговое значение для определения сильных колебаний.
      :return: Str или None. Возвращает сообщение о колебаниях, если они превышают порог;
      иначе None.
      """

@@ -60,6 +60,15 @@ def rsi_func(data: pd.DataFrame, period: int = 14) -> pd.DataFrame:
     return rsi
 
 def macd_func(data: pd.DataFrame, short_period: int = 12, long_period: int = 26, signal_period: int = 9) -> pd.DataFrame:
+    """
+    Функция рассчитывает технический индикатор (MACD) и сигнальную линию для заданного DataFrame.
+
+    :param data: DataFrame с историческими данными акций, должен содержать колонку 'Close'.
+    :param short_period: Период для короткой EMA (по умолчанию 12).
+    :param long_period: Период для длинной EMA (по умолчанию 26).
+    :param signal_period: Период для сигнальной линии EMA (по умолчанию 9).
+    :return: DataFrame[['MACD', 'Signal']]
+    """
     short_ewma = data['Close'].ewm(com=short_period, adjust=False).mean()
     long_ewma = data['Close'].ewm(com=long_period, adjust=False).mean()
     macd = short_ewma - long_ewma

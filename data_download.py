@@ -2,12 +2,14 @@ import pandas as pd
 import yfinance as yf
 
 
-def fetch_stock_data(ticker:str, period: str = '1mo') -> pd.DataFrame:
+def fetch_stock_data(ticker:str, start: str = None, end: str = None, period: str = '1mo',) -> pd.DataFrame:
     """
      Получает исторические данные об акциях для указанного тикера и временного периода.
      Возвращает DataFrame с данными.
 
     :param ticker: Обозначающая тикер акции (например, "AAPL" для Apple Inc.).
+    :param start: Дата начала исторических данных.
+    :param end: Дата конца исторических данных.
     :param period: Временной диапазон, за который вы хотите получить данные.
     По умолчанию 14.
     Он может принимать значения, такие как:
@@ -24,9 +26,13 @@ def fetch_stock_data(ticker:str, period: str = '1mo') -> pd.DataFrame:
     'max': максимальный доступный период
     :return: DataFrame возвращает отфильтрованные данные по указанным параметрам
     """
-    stock = yf.Ticker(ticker)
-    data = stock.history(period=period)
-    return data
+    try:
+        stock = yf.Ticker(ticker)
+        data = stock.history(period=period, start=start, end=end)
+        return data
+    except Exception as exc:
+        print(f"{exc}")
+
 
 def add_moving_average(data: pd.DataFrame, window_size: int = 5) -> pd.DataFrame:
     """

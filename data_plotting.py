@@ -13,7 +13,7 @@ def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, filename:
 
     :param data: DataFrame, содержащий исторические данные акций с колонками 'Close' и 'Moving_Average'.
     :param ticker: Str тикер акции для заголовка графика.
-    :param period: Str период времени для данных (например, '1mo').
+    :param period: Str период времени для данных (например: '1mo', '2020-02-01/2021-02-01').
     :param filename: Str имя файла для сохранения графика; если не указано, имя генерируется автоматически.
     :return: None
     """

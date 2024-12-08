@@ -45,6 +45,7 @@ def add_moving_average(data: pd.DataFrame, window_size: int = 5) -> pd.DataFrame
     data['Moving_Average'] = data['Close'].rolling(window=window_size).mean()
     return data[['Moving_Average' ]]
 
+
 def rsi_func(data: pd.DataFrame, period: int = 14) -> pd.DataFrame:
     """
         Рассчитывает индекс относительной силы (RSI) для заданного DataFrame.
@@ -64,6 +65,7 @@ def rsi_func(data: pd.DataFrame, period: int = 14) -> pd.DataFrame:
     rs = ewma_pos_change / ewma_neg_change
     rsi= 100 - (100/(1 + rs))
     return rsi
+
 
 def macd_func(data: pd.DataFrame, short_period: int = 12, long_period: int = 26, signal_period: int = 9) -> pd.DataFrame:
     """

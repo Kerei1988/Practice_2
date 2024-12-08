@@ -83,5 +83,6 @@ def main():
     else:
         raise ValueError(f"Отсутствует необходимый столбец: 'Close'")
 
+
 if __name__ == "__main__":
     main()

@@ -466,3 +466,49 @@ pip install pandas yfinance matplotlib
         
         [84 rows x 1 columns]
         График сохранен как AAPL_2024-02-01:2024-06-01_stock_price_chart.png
+
+### Задача №6. Реализовать функционал: Добавление параметра для выбора стиля графика
+    #В create_and_save_plot добавить параметр для выбора стиля и использовать plt.style.use(выбранный_стиль)
+     для применения стиля к графику.
+
+    # В функции main реализован интерфейс возможности выбора стиля для графиков в цикле while.
+      Если польвзователь вводит 'No', то стиль графика будет 'classic' 
+
+    # Пример использования стиля графика, где выбран стиль 'dark_background':
+    
+        Добро пожаловать в инструмент получения и построения графиков биржевых данных.
+        Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), GOOGL (Alphabet Inc),
+         MSFT (Microsoft Corporation), AMZN (Amazon.com Inc), TSLA (Tesla Inc).
+        Общие периоды времени для данных о запасах включают: 1д, 5д, 1мес, 3мес, 6мес, 1г, 2г, 5г, 10л, с начала года, 
+        макс.
+        Введите тикер акции (например, «AAPL» для Apple Inc): AAPL
+        Хотите выбрать стиль для графика введите "Yes", иначе "No": yes
+        Стили отображения графика: Solarize_Light2,
+         bmh,
+         classic,
+         dark_background,
+         fast,
+         fivethirtyeight,
+         ggplot,
+         grayscale,
+         seaborn-v0_8,
+         seaborn-v0_8-bright,
+         seaborn-v0_8-colorblind,
+         seaborn-v0_8-dark,
+         seaborn-v0_8-dark-palette,
+         seaborn-v0_8-darkgrid,
+         seaborn-v0_8-deep,
+         seaborn-v0_8-muted,
+         seaborn-v0_8-notebook,
+         seaborn-v0_8-paper,
+         seaborn-v0_8-pastel,
+         seaborn-v0_8-poster,
+         seaborn-v0_8-talk,
+         seaborn-v0_8-ticks,
+         seaborn-v0_8-white,
+         seaborn-v0_8-whitegrid,
+         tableau-colorblind10
+        Введите название желаемого стиля: dark_background
+        Хотите ввести конкретные даты (введите 'Dates') или выбрать предустановленный период (введите 'Period'): period
+        Введите период для данных (например, '1mo' для одного месяца): 1y
+        График сохранен как AAPL_1y_stock_price_chart.png

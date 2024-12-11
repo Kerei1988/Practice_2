@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import pandas as pd
 import yfinance as yf
 
@@ -10,6 +12,13 @@ from task_3 import export_data_to_csv as edtc
 
 
 def main():
+    chart_style = ['Solarize_Light2', 'bmh', 'classic', 'dark_background', 'fast', 'fivethirtyeight', 'ggplot',
+                   'grayscale', 'seaborn-v0_8', 'seaborn-v0_8-bright', 'seaborn-v0_8-colorblind', 'seaborn-v0_8-dark',
+                   'seaborn-v0_8-dark-palette', 'seaborn-v0_8-darkgrid', 'seaborn-v0_8-deep', 'seaborn-v0_8-muted',
+                   'seaborn-v0_8-notebook', 'seaborn-v0_8-paper', 'seaborn-v0_8-pastel', 'seaborn-v0_8-poster',
+                   'seaborn-v0_8-talk', 'seaborn-v0_8-ticks', 'seaborn-v0_8-white', 'seaborn-v0_8-whitegrid',
+                   'tableau-colorblind10']
+    style = ""
     period = None
     stock_data = pd.DataFrame
     print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
@@ -29,6 +38,17 @@ def main():
             break
         except Exception as e:
             print(f"Ошибка: {e}. Пожалуйста, проверьте введённый тикер.")
+
+    option_style = input('Хотите выбрать стиль для графика введите "Yes", иначе "No": ').strip().lower()
+    if option_style == 'yes':
+        while True:
+            print("Стили отображения графика:", ',\n '.join(chart_style))
+            style = input(f"Введите название желаемого стиля: ")
+            if style in chart_style:
+                break
+            print('Введите название стиля из списка!')
+    if option_style == 'no':
+        style = 'classic'
 
     while True:
         choices = input("Хотите ввести конкретные даты (введите 'Dates') или"
@@ -57,29 +77,29 @@ def main():
                     break
                 except Exception as exc:
                     print(f"Ошибка при получении данных: {exc}. Пожалуйста, попробуйте снова.")
-            break
 
         else: print("Неверный ввод. Нужно ввести 'дата' или 'период'. Пожалуйста, начните заново(в формате YYYY-MM-DD).")
         break
 
     if 'Close' in stock_data.columns:
-        print(stock_data)
+
         # Writing the received data to a .csv file
-        edtc(stock_data)
+        # edtc(stock_data)
 
         # Price fluctuations with the specified threshold
-        oscillation = nisf(stock_data, 4)
+        # oscillation = nisf(stock_data, 4)
 
         # The average closing price of shares for a given period.
-        average_price = cada(stock_data, time_period=7)
-        print(average_price)
+        # average_price = cada(stock_data, time_period=7)
+        # print(average_price)
 
         # Add moving average to the data
-        average = dd.add_moving_average(stock_data)
-        print(average)
+        # average = dd.add_moving_average(stock_data)
+        # print(average)
 
         # # Plot the data
-        dp.create_and_save_plot(stock_data, ticker, period)
+        dp.create_and_save_plot(stock_data, ticker, period, style=style)
+
     else:
         raise ValueError(f"Отсутствует необходимый столбец: 'Close'")
 

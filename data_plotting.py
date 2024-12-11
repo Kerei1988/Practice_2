@@ -1,20 +1,22 @@
 
 import matplotlib.pyplot as plt
+from matplotlib import style
 import pandas as pd
 
 from data_download import  add_moving_average, rsi_func, macd_func
 
 
-def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, filename: str=None) -> None:
+def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, style: str = 'classic', filename: str=None) -> None:
     """
     Создаёт график, отображающий цены закрытия и скользящие средние.
     Предоставляет возможность сохранения графика в файл.
     Параметр filename опционален; если он не указан, имя файла генерируется автоматически.
 
     :param data: DataFrame, содержащий исторические данные акций с колонками 'Close' и 'Moving_Average'.
-    :param ticker: Str тикер акции для заголовка графика.
-    :param period: Str период времени для данных (например: '1mo', '2020-02-01/2021-02-01').
-    :param filename: Str имя файла для сохранения графика; если не указано, имя генерируется автоматически.
+    :param ticker: Тикер акции для заголовка графика.
+    :param period: Период времени для данных (например: '1mo', '2020-02-01/2021-02-01').
+    :param filename: Имя файла для сохранения графика; если не указано, имя генерируется автоматически.
+    :param style: Установка стиля графика. По умолчанию classic
     :return: None
     """
     dates = None
@@ -32,6 +34,8 @@ def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, filename:
 
     fig = plt.figure(figsize=(18, 12))
     gs = fig.add_gridspec(6, 1)
+
+    plt.style.use(style)
 
     ax1 = fig.add_subplot(gs[0:4, 0])
     ax1.plot(dates, data['Close'].values, label='Close Price', color='green')

@@ -83,3 +83,17 @@ def macd_func(data: pd.DataFrame, short_period: int = 12, long_period: int = 26,
 
     signal = macd.ewm(com=signal_period, adjust=False).mean()
     return pd.DataFrame({'MACD': macd, 'Signal': signal})
+
+
+def standard_deviation(data: pd.DataFrame, window: int = 20):
+    """
+     Функция вычисляет среднее и стандартное отклонение от среднего.
+
+    :param data: DataFrame содержащий колонку "Close".
+    :param window: Значение окна(период) за который будут вычисляться среднее и стандартное отклонение.
+    :return: DataFrame
+    """
+    data["STD"] = data['Close'].rolling(window=window).std()
+    data["Mean"] = data['Close'].rolling(window=window).mean()
+    data.index = pd.to_datetime(data.index)
+    return data[['STD', "Mean"]]

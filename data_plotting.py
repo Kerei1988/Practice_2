@@ -3,10 +3,11 @@ import matplotlib.pyplot as plt
 from matplotlib import style
 import pandas as pd
 
-from data_download import  add_moving_average, rsi_func, macd_func
+from data_download import  add_moving_average, rsi_func, macd_func, standard_deviation
 
 
-def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, style: str = 'classic', filename: str=None) -> None:
+def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, fashion: str = 'classic',
+                         filename: str=None, window: int = None) -> None:
     """
     Создаёт график, отображающий цены закрытия и скользящие средние.
     Предоставляет возможность сохранения графика в файл.
@@ -16,7 +17,8 @@ def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, style: st
     :param ticker: Тикер акции для заголовка графика.
     :param period: Период времени для данных (например: '1mo', '2020-02-01/2021-02-01').
     :param filename: Имя файла для сохранения графика; если не указано, имя генерируется автоматически.
-    :param style: Установка стиля графика. По умолчанию classic
+    :param fashion: Установка стиля графика. По умолчанию classic.
+    :param window: Период за который нужно получить среднее отклонение
     :return: None
     """
     dates = None
@@ -24,7 +26,8 @@ def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, style: st
     macd_df = macd_func(data)
     data = data.join(macd_df)
     average = add_moving_average(data)
-    pd.concat([data, average], join='inner', axis=1)
+    data = pd.concat([data, average], join='inner', axis=1)
+    std_mean = standard_deviation(data, window=window)
 
     if 'Date' not in data:
         if pd.api.types.is_datetime64_any_dtype(data.index):
@@ -35,10 +38,14 @@ def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, style: st
     fig = plt.figure(figsize=(18, 12))
     gs = fig.add_gridspec(6, 1)
 
-    plt.style.use(style)
+    plt.style.use(fashion)
 
     ax1 = fig.add_subplot(gs[0:4, 0])
     ax1.plot(dates, data['Close'].values, label='Close Price', color='green')
+    if window is not None:
+        ax1.fill_between(dates,
+                         std_mean['Mean'] - std_mean['STD'],
+                         std_mean["Mean"] + std_mean['STD'], color="lightblue", alpha=0.5, label='Стандартное отклонение')
     ax1.plot(dates, data['Moving_Average'].values, label='Moving Average', color='yellow')
     plt.title(f"{ticker} Цена акций с течением времени")
     plt.xlabel("Дата")

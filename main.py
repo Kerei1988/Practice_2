@@ -21,6 +21,7 @@ def main():
     style = ""
     period = None
     stock_data = pd.DataFrame
+    std = 20
     print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
     print("Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), "
           "GOOGL (Alphabet Inc), MSFT (Microsoft Corporation), AMZN (Amazon.com Inc), TSLA (Tesla Inc).")
@@ -49,6 +50,17 @@ def main():
             print('Введите название стиля из списка!')
     if option_style == 'no':
         style = 'classic'
+
+    while True:
+        try:
+            enter_std = (input('Установите период для вычисления среднего отклонения(по умолчанию равно 20 дней - нажмите Enter): '))
+            if enter_std == '':
+                break
+            else:
+                std = int(enter_std)
+                break
+        except ValueError:
+            print('Введите целое число!')
 
     while True:
         choices = input("Хотите ввести конкретные даты (введите 'Dates') или"
@@ -81,7 +93,7 @@ def main():
         else: print("Неверный ввод. Нужно ввести 'дата' или 'период'. Пожалуйста, начните заново(в формате YYYY-MM-DD).")
         break
 
-    if 'Close' in stock_data.columns:
+    if 'Close' in stock_data.columns and not stock_data.empty:
 
         # Writing the received data to a .csv file
         # edtc(stock_data)
@@ -98,11 +110,10 @@ def main():
         # print(average)
 
         # # Plot the data
-        dp.create_and_save_plot(stock_data, ticker, period, style=style)
+        dp.create_and_save_plot(stock_data, ticker, period, fashion=style, window=std)
 
     else:
         raise ValueError(f"Отсутствует необходимый столбец: 'Close'")
-
 
 if __name__ == "__main__":
     main()

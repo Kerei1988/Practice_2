@@ -108,9 +108,17 @@ def main():
         # Add moving average to the data
         # average = dd.add_moving_average(stock_data)
         # print(average)
+        #
+        # # # Plot the data
+        # dp.create_and_save_plot(stock_data, ticker, period, fashion=style, window=std)
 
-        # # Plot the data
-        dp.create_and_save_plot(stock_data, ticker, period, fashion=style, window=std)
+        # Plot the data with the option for interactive plotting
+        interactive_choice = input("Хотите создать интерактивный график? Введите 'Yes' или 'No': ").strip().lower()
+
+        if interactive_choice == "yes":
+            dp.create_and_save_plot(stock_data, ticker, period, fashion=style, window=std, interactive=True)
+        else:
+            dp.create_and_save_plot(stock_data, ticker, period, fashion=style, window=std)
 
     else:
         raise ValueError(f"Отсутствует необходимый столбец: 'Close'")

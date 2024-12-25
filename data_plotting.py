@@ -2,12 +2,13 @@
 import matplotlib.pyplot as plt
 from matplotlib import style
 import pandas as pd
+import plotly.graph_objects as go
 
 from data_download import  add_moving_average, rsi_func, macd_func, standard_deviation
 
 
 def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, fashion: str = 'classic',
-                         filename: str=None, window: int = None) -> None:
+                         filename: str=None, window: int = None, interactive: bool = False) -> None:
     """
     Создаёт график, отображающий цены закрытия и скользящие средние.
     Предоставляет возможность сохранения графика в файл.
@@ -19,6 +20,7 @@ def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, fashion: 
     :param filename: Имя файла для сохранения графика; если не указано, имя генерируется автоматически.
     :param fashion: Установка стиля графика. По умолчанию classic.
     :param window: Период за который нужно получить среднее отклонение
+    :param interactive: если True, создает интерактивный график
     :return: None
     """
     dates = None
@@ -34,6 +36,10 @@ def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, fashion: 
             dates = data.index.to_numpy()
         else:
             print("Информация о дате отсутствует или не имеет распознаваемого формата.")
+
+    if interactive:
+        create_interactive_plot(data, ticker, period)
+        return
 
     fig = plt.figure(figsize=(18, 12))
     gs = fig.add_gridspec(6, 1)
@@ -75,6 +81,50 @@ def create_and_save_plot(data: pd.DataFrame, ticker: str, period: str, fashion: 
 
     plt.savefig(filename)
     print(f"График сохранен как {filename}")
+
+
+def create_interactive_plot(data: pd.DataFrame, ticker: str, period: str) -> None:
+    """
+    Создаёт интерактивный график с использованием Plotly.
+
+    :param data: DataFrame с данными акций.
+    :param ticker: Тикер акции для заголовка графика.
+    :param period: Период времени для данных.
+    :return: None
+    """
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(x=data.index,
+                             y=data['Close'],
+                             mode='lines',
+                             name='Close Price',
+                             line=dict(color='green')))
+
+    if 'Moving_Average' in data.columns:
+        fig.add_trace(go.Scatter(x=data.index,
+                                 y=data['Moving_Average'],
+                                 mode='lines',
+                                 name='Moving Average',
+                                 line=dict(color='yellow')))
+
+    fig.add_trace(go.Scatter(x=data.index,
+                             y=data['RSI'],
+                             mode='lines',
+                             name='RSI',
+                             line=dict(color='blue')))
+
+    fig.add_trace(go.Scatter(x=data.index,
+                             y=data['MACD'],
+                             mode='lines',
+                             name='MACD',
+                             line=dict(color='purple')))
+
+    fig.update_layout(title=f"{ticker} Цена акций с течением времени",
+                      xaxis_title="Дата",
+                      yaxis_title="Цена",
+                      legend=dict(x=0.01, y=0.99))
+
+    fig.show()
 
 
 
